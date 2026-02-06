@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-01-add-role-check-constraint
+      author: aint_tim
+      comment: Добавление CHECK constraint для ролей
+      changes:
+        - sql:
+            sql: >
+              ALTER TABLE users 
+              ADD CONSTRAINT chk_users_role 
+              CHECK (role IN ('USER', 'ADMIN'))
+
+        - sql:
+            sql: >
+              ALTER TABLE cards 
+              ADD CONSTRAINT chk_cards_status 
+              CHECK (status IN ('ACTIVE', 'BLOCKED', 'EXPIRED'))
+
+  - changeSet:
+      id: 002-02-set-default-role
+      author: aint_tim
+      comment: Установка роли по умолчанию
+      changes:
+        - addDefaultValue:
+            tableName: users
+            columnName: role
+            defaultValue: USER

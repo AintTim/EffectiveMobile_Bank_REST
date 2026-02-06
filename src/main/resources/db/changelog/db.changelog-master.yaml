@@ -1,0 +1,6 @@
+databaseChangeLog:
+  - include:
+      file: db/migration/v1_init_schema.yaml
+  - include:
+      file: db/migration/v2_add-roles-constraint.yaml
+
