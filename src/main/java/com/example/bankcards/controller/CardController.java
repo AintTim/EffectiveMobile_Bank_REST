@@ -7,6 +7,7 @@ import com.example.bankcards.exception.CardNotFoundException;
 import com.example.bankcards.exception.DuplicateCardException;
 import com.example.bankcards.exception.ErrorDto;
 import com.example.bankcards.service.CardService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,7 +32,7 @@ public class CardController {
 
     @PostMapping
     public ResponseEntity<CardDto> createCard(
-            @RequestBody CreateCardRequest request,
+            @Valid @RequestBody CreateCardRequest request,
             UriComponentsBuilder uriBuilder) {
         var card = service.createCard(request);
         var uri = uriBuilder.path("/cards/{id}").buildAndExpand(card.getId()).toUri();
@@ -47,7 +48,7 @@ public class CardController {
     @PatchMapping("/{id}")
     public CardDto updateCardStatus(
             @PathVariable(name = "id") UUID id,
-            @RequestBody UpdateCardStatusRequest request) {
+            @Valid @RequestBody UpdateCardStatusRequest request) {
         return service.updateCardStatus(id, request);
     }
 
@@ -68,7 +69,7 @@ public class CardController {
     }
 
     @GetMapping("/{id}/balance")
-    public BigDecimal getUserCards(@PathVariable(name = "id") UUID id) {
+    public BigDecimal getCardBalance(@PathVariable(name = "id") UUID id) {
         return service.getCardBalance(id);
     }
 

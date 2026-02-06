@@ -13,7 +13,7 @@ public class UserSecurityRules implements SecurityRules {
     public void configure(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry registry) {
         registry
                 .requestMatchers(HttpMethod.GET, "/users/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/users/**").hasRole(Role.ADMIN.name())
+                .requestMatchers(HttpMethod.POST, "/users/**").permitAll()
                 .requestMatchers(HttpMethod.PUT, "/users/**").hasRole(Role.ADMIN.name())
                 .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole(Role.ADMIN.name());
     }

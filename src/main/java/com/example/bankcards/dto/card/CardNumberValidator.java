@@ -6,7 +6,7 @@ import jakarta.validation.ConstraintValidatorContext;
 import java.util.regex.Pattern;
 
 public class CardNumberValidator implements ConstraintValidator<ValidNumber, String> {
-    private static final Pattern CARD_REGEX = Pattern.compile("^\\d{4}\\s?\\d{4}\\s?\\d{4}\\s?\\d{4}$");
+    private static final Pattern CARD_REGEX = Pattern.compile("^\\d{16}$");
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {

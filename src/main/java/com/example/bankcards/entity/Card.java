@@ -22,7 +22,7 @@ public class Card {
     @Column(name = "number", updatable = false)
     private String number;
 
-    @ManyToOne(cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 

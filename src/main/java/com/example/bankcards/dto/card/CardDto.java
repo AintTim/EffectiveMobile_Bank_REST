@@ -11,6 +11,7 @@ import java.util.UUID;
 public class CardDto {
 
     private UUID id;
+    private Long userId;
     private String number;
     private LocalDate expirationDate;
     private CardStatus status;

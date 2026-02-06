@@ -4,14 +4,15 @@ import com.example.bankcards.dto.card.CardDto;
 import com.example.bankcards.dto.card.CreateCardRequest;
 import com.example.bankcards.entity.Card;
 import org.mapstruct.Mapper;
-
-import java.util.List;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface CardMapper {
 
+    @Mapping(target = "balance", expression = "java(java.math.BigDecimal.ZERO)")
+    @Mapping(target = "status", constant = "ACTIVE")
     Card toEntity(CreateCardRequest request);
-    List<CardDto> toDtos(List<Card> cards);
+
+    @Mapping(target = "userId", source = "user.id")
     CardDto toDto(Card card);
-    // update() - для обновления баланса
 }

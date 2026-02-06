@@ -1,5 +1,6 @@
 package com.example.bankcards.dto.card;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -17,5 +18,6 @@ public class CreateCardRequest {
 
     @NotNull(message = "Expiration date must be provided")
     @FutureOrPresent
+    @JsonFormat(pattern = "dd.MM.yyyy")
     private LocalDate expirationDate;
 }

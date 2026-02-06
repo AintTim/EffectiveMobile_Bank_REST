@@ -6,7 +6,6 @@ import com.example.bankcards.dto.user.UpdateUserRequest;
 import com.example.bankcards.dto.user.UserDto;
 import com.example.bankcards.exception.DuplicateUserException;
 import com.example.bankcards.exception.ErrorDto;
-import com.example.bankcards.exception.UserNotFoundException;
 import com.example.bankcards.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -33,7 +32,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public UserDto getUser(@PathVariable Long id) {
-        return service.getUser(id);
+        return service.getUserDto(id);
     }
 
     @PostMapping
@@ -49,11 +48,11 @@ public class UserController {
     @PutMapping("/{id}")
     public UserDto updateUser(
             @PathVariable(name = "id") Long id,
-            @RequestBody UpdateUserRequest request) {
+            @Valid @RequestBody UpdateUserRequest request) {
         return service.updateUser(id, request);
     }
 
-    @DeleteMapping("/{id{")
+    @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable Long id) {
         service.deleteUser(id);
     }
@@ -61,7 +60,7 @@ public class UserController {
     @PostMapping("/{id}/change-password")
     public void changePassword(
             @PathVariable Long id,
-            @RequestBody ChangePasswordRequest request
+            @Valid @RequestBody ChangePasswordRequest request
     ) {
         service.changePassword(id, request);
     }
@@ -70,11 +69,6 @@ public class UserController {
     public ResponseEntity<ErrorDto> handleDuplicateUserException() {
         return ResponseEntity.badRequest()
                 .body(new ErrorDto("Email is already registered."));
-    }
-
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<Void> handleUserNotFound() {
-        return ResponseEntity.notFound().build();
     }
 
     @ExceptionHandler(AccessDeniedException.class)
