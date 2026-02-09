@@ -92,14 +92,12 @@ public class CardService {
     }
 
     @Transactional
-    public CardDto blockCard(UUID id) {
+    public void blockCard(UUID id) {
         var card = findCardById(id);
         validateCardAccess(card);
 
         card.setStatus(CardStatus.BLOCKED);
-        var updatedCard = repository.save(card);
-
-        return toMaskedCardDto(updatedCard);
+        repository.save(card);
     }
 
     @Transactional

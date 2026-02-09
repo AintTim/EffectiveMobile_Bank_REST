@@ -95,3 +95,13 @@ databaseChangeLog:
             tableName: cards
             columnNames: number
             constraintName: uk_cards_number
+
+  - changeSet:
+      id: 001-03-add-default-status-to-cards
+      author: aint_tim
+      comment: Добавление значения по умолчанию для статуса карты
+      changes:
+        - addDefaultValue:
+            tableName: cards
+            columnName: status
+            defaultValue: "ACTIVE"

@@ -12,9 +12,9 @@ public class UserSecurityRules implements SecurityRules {
     @Override
     public void configure(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry registry) {
         registry
-                .requestMatchers(HttpMethod.GET, "/users/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/users/**").permitAll()
-                .requestMatchers(HttpMethod.PUT, "/users/**").hasRole(Role.ADMIN.name())
-                .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole(Role.ADMIN.name());
+                .requestMatchers(HttpMethod.GET, "/api/users/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/users/**").permitAll()
+                .requestMatchers(HttpMethod.PUT, "/api/users/**").hasRole(Role.ADMIN.name())
+                .requestMatchers(HttpMethod.DELETE, "/api/users/**").hasRole(Role.ADMIN.name());
     }
 }
