@@ -4,6 +4,7 @@ import com.example.bankcards.config.JwtConfig;
 import com.example.bankcards.dto.auth.JwtResponse;
 import com.example.bankcards.dto.auth.LoginRequest;
 import com.example.bankcards.service.AuthService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -13,6 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(
+        name = "Аутентификация",
+        description = "API для входа в систему, обновления токенов и управления сессиями"
+)
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/auth")
