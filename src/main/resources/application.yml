@@ -1,8 +1,3 @@
-#
-# application.yml — главный конфигурационный файл Spring Boot.
-
-
-
 spring:
   application:
     name: bank-cards-api
@@ -13,10 +8,9 @@ spring:
     refreshTokenExpiration: 604800 # 7d
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/embank
-    username: admin
-    password: password
-    driver-class-name: org.postgresql.Driver
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
 
   jpa:
     hibernate:
@@ -26,7 +20,6 @@ spring:
   liquibase:
     enabled: true
     change-log: classpath:/db/changelog/db.changelog-master.yaml
-    drop-first: false
 
 logging:
   level:
