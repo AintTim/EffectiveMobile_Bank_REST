@@ -39,4 +39,20 @@ public class Card {
     public boolean isOwnedBy(User user) {
         return this.user.equals(user);
     }
+
+    public boolean isBlocked() {
+        return CardStatus.BLOCKED.equals(this.status);
+    }
+
+    public boolean hasSufficientBalance(BigDecimal amount) {
+        return this.balance.compareTo(amount) >= 0;
+    }
+
+    public void deposit(BigDecimal amount) {
+        this.balance = this.balance.add(amount);
+    }
+
+    public void withdraw(BigDecimal amount) {
+        this.balance = this.balance.subtract(amount);
+    }
 }

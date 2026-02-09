@@ -3,9 +3,13 @@ package com.example.bankcards.service;
 import com.example.bankcards.dto.card.CardDto;
 import com.example.bankcards.dto.card.CreateCardRequest;
 import com.example.bankcards.dto.card.UpdateCardStatusRequest;
+import com.example.bankcards.dto.transfer.TransferRequest;
 import com.example.bankcards.entity.Card;
+import com.example.bankcards.entity.CardStatus;
 import com.example.bankcards.exception.CardNotFoundException;
 import com.example.bankcards.exception.DuplicateCardException;
+import com.example.bankcards.exception.IllegalTransferException;
+import com.example.bankcards.exception.NotEnoughFundsException;
 import com.example.bankcards.mapper.CardMapper;
 import com.example.bankcards.repository.CardRepository;
 import com.example.bankcards.util.CardNumberMasker;
@@ -53,6 +57,11 @@ public class CardService {
         return toMaskedCardDto(card);
     }
 
+    public BigDecimal getCardBalance(UUID id) {
+        var card = getCardDto(id);
+        return card.getBalance();
+    }
+
     @Transactional
     public CardDto createCard(CreateCardRequest request) {
         validateCardNumberUniqueness(request.getNumber());
@@ -83,28 +92,60 @@ public class CardService {
     }
 
     @Transactional
-    public CardDto updateCardBalance(UUID id, BigDecimal balance) {
+    public CardDto blockCard(UUID id) {
         var card = findCardById(id);
-        card.setBalance(balance);
+        validateCardAccess(card);
 
+        card.setStatus(CardStatus.BLOCKED);
         var updatedCard = repository.save(card);
 
         return toMaskedCardDto(updatedCard);
     }
 
-    public BigDecimal getCardBalance(UUID id) {
-        var card = getCardDto(id);
-        return card.getBalance();
+    @Transactional
+    public void transferFundsBetweenOwnCards(TransferRequest request) {
+        validateTransferRequest(request);
+
+        var fromCard = findCardById(request.getFromCard());
+        var toCard = findCardById(request.getToCard());
+        validateCardsAccess(fromCard, toCard);
+        validateCardsStatus(fromCard, toCard);
+
+        executeTransfer(fromCard, toCard, request.getAmount());
     }
 
     private Card findCardById(UUID id) {
         return repository.findById(id).orElseThrow(CardNotFoundException::new);
     }
 
+    private void executeTransfer(Card sourceCard, Card targetCard, BigDecimal amount) {
+        if (!sourceCard.hasSufficientBalance(amount)) {
+            throw new NotEnoughFundsException("Not enough funds on source card for transfer");
+        }
+        sourceCard.withdraw(amount);
+        targetCard.deposit(amount);
+
+        repository.saveAll(List.of(sourceCard, targetCard));
+    }
+
     private void validateCardNumberUniqueness(String cardNumber) {
         if (repository.existsByNumber(cardNumber)) {
             throw new DuplicateCardException();
         }
+    }
+
+    private void validateCardsStatus(Card from, Card to) {
+        if (from.isBlocked()) {
+            throw new IllegalTransferException("Cannot transfer from blocked card");
+        }
+        if (to.isBlocked()) {
+            throw new IllegalTransferException("Cannot transfer to blocked card");
+        }
+    }
+
+    private void validateCardsAccess(Card from, Card to) {
+        validateCardAccess(from);
+        validateCardAccess(to);
     }
 
     private void validateCardAccess(Card card) {
@@ -114,7 +155,13 @@ public class CardService {
             return;
         }
 
-        throw new AccessDeniedException("You do not have access to this card");
+        throw new AccessDeniedException("You do not have access to this card " + card.getId());
+    }
+
+    private void validateTransferRequest(TransferRequest request) {
+        if (request.getFromCard().equals(request.getToCard())) {
+            throw new IllegalTransferException("Cannot transfer to the same card");
+        }
     }
 
     private CardDto toMaskedCardDto(Card card) {

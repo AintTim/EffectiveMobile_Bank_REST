@@ -3,9 +3,8 @@ package com.example.bankcards.controller;
 import com.example.bankcards.dto.card.CardDto;
 import com.example.bankcards.dto.card.CreateCardRequest;
 import com.example.bankcards.dto.card.UpdateCardStatusRequest;
-import com.example.bankcards.exception.CardNotFoundException;
-import com.example.bankcards.exception.DuplicateCardException;
-import com.example.bankcards.exception.ErrorDto;
+import com.example.bankcards.dto.transfer.TransferRequest;
+import com.example.bankcards.exception.*;
 import com.example.bankcards.service.CardService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -25,7 +24,7 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/cards")
+@RequestMapping("/api/cards")
 public class CardController {
 
     private final CardService service;
@@ -38,6 +37,16 @@ public class CardController {
         var uri = uriBuilder.path("/cards/{id}").buildAndExpand(card.getId()).toUri();
 
         return ResponseEntity.created(uri).body(card);
+    }
+
+    @PostMapping("/block/{id}")
+    public void blockOwnCard(@PathVariable(name = "id") UUID id) {
+        service.blockCard(id);
+    }
+
+    @PostMapping("/transfer")
+    public void transferBetweenOwnCards(@Valid @RequestBody TransferRequest request) {
+        service.transferFundsBetweenOwnCards(request);
     }
 
     @GetMapping("/{id}")
@@ -89,5 +98,15 @@ public class CardController {
         return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)
                 .body(new ErrorDto(ex.getMessage()));
+    }
+
+    @ExceptionHandler(IllegalTransferException.class)
+    public ResponseEntity<ErrorDto> handleIllegalTransfer(Exception ex) {
+        return ResponseEntity.badRequest().body(new ErrorDto(ex.getMessage()));
+    }
+
+    @ExceptionHandler(NotEnoughFundsException.class)
+    public ResponseEntity<ErrorDto> handleNotEnoughFunds(Exception ex) {
+        return ResponseEntity.badRequest().body(new ErrorDto(ex.getMessage()));
     }
 }

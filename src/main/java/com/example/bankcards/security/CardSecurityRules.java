@@ -12,9 +12,11 @@ public class CardSecurityRules implements SecurityRules {
     @Override
     public void configure(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry registry) {
         registry
-                .requestMatchers(HttpMethod.GET, "/users/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/cards/**").hasRole(Role.ADMIN.name())
-                .requestMatchers(HttpMethod.PATCH, "/cards/**").hasRole(Role.ADMIN.name())
-                .requestMatchers(HttpMethod.DELETE, "/cards/**").hasRole(Role.ADMIN.name());
+                .requestMatchers(HttpMethod.GET, "/api/users/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/cards").hasRole(Role.ADMIN.name())
+                .requestMatchers(HttpMethod.POST, "/api/cards/block/").hasRole(Role.USER.name())
+                .requestMatchers(HttpMethod.POST, "/api/cards/transfer").hasRole(Role.USER.name())
+                .requestMatchers(HttpMethod.PATCH, "/api/cards/**").hasRole(Role.ADMIN.name())
+                .requestMatchers(HttpMethod.DELETE, "/api/cards/**").hasRole(Role.ADMIN.name());
     }
 }
