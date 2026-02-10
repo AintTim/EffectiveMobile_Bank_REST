@@ -6,6 +6,6 @@ import org.springframework.stereotype.Component;
 public class CardNumberMasker {
 
     public String mask(String value) {
-        return "**** **** **** "+ value.substring(12);
+        return "**** **** **** " + value.substring(12);
     }
 }

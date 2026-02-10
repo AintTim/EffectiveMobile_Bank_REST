@@ -99,19 +99,19 @@ public class CardController {
     @Operation(
             summary = "Получить свои карты",
             description = """
-        Получить пагинированный список карт текущего пользователя.
-        
-        **Примеры запросов:**
-        - `GET /api/cards/my` - первая страница, 20 карт, сортировка по expirationDate ASC
-        - `GET /api/cards/my?page=1&size=10` - вторая страница, 10 карт на странице
-        - `GET /api/cards/my?sort=balance,desc` - сортировка по балансу по убыванию
-        - `GET /api/cards/my?sort=status,asc&sort=expirationDate,desc` - множественная сортировка
-        
-        **Поддерживаемые поля для сортировки:**
-        - `expirationDate` (по умолчанию) - дата истечения срока
-        - `balance` - баланс карты
-        - `status` - статус карты
-        """
+                    Получить пагинированный список карт текущего пользователя.
+                    
+                    **Примеры запросов:**
+                    - `GET /api/cards/my` - первая страница, 20 карт, сортировка по expirationDate ASC
+                    - `GET /api/cards/my?page=1&size=10` - вторая страница, 10 карт на странице
+                    - `GET /api/cards/my?sort=balance,desc` - сортировка по балансу по убыванию
+                    - `GET /api/cards/my?sort=status,asc&sort=expirationDate,desc` - множественная сортировка
+                    
+                    **Поддерживаемые поля для сортировки:**
+                    - `expirationDate` (по умолчанию) - дата истечения срока
+                    - `balance` - баланс карты
+                    - `status` - статус карты
+                    """
     )
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/my")

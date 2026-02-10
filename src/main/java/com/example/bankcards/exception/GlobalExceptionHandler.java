@@ -13,7 +13,7 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String >> handleValidationErrors(
+    public ResponseEntity<Map<String, String>> handleValidationErrors(
             MethodArgumentNotValidException exception
     ) {
         var errors = new HashMap<String, String>();
