@@ -65,7 +65,6 @@ public class CardController {
             @ApiResponse(responseCode = "404", description = "Карта не найдена")
     })
     @PostMapping("/block/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void blockOwnCard(@PathVariable(name = "id") UUID id) {
         service.blockCard(id);
     }
@@ -142,6 +141,7 @@ public class CardController {
 
     @SecurityRequirement(name = "bearerAuth")
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCard(@PathVariable(name = "id") UUID id) {
         service.removeCard(id);
     }
