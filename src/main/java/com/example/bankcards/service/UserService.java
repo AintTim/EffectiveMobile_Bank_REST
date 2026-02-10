@@ -4,7 +4,6 @@ import com.example.bankcards.dto.user.ChangePasswordRequest;
 import com.example.bankcards.dto.user.RegisterUserRequest;
 import com.example.bankcards.dto.user.UpdateUserRequest;
 import com.example.bankcards.dto.user.UserDto;
-import com.example.bankcards.entity.Role;
 import com.example.bankcards.entity.User;
 import com.example.bankcards.exception.DuplicateUserException;
 import com.example.bankcards.exception.UserNotFoundException;
@@ -37,7 +36,6 @@ public class UserService {
 
         var user = mapper.toEntity(request);
         encodeAndSetUserPassword(user, request.getPassword());
-        user.setRole(Role.USER);
 
         var savedUser = repository.save(user);
         return mapper.toDto(savedUser);

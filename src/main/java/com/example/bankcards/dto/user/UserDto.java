@@ -1,5 +1,6 @@
 package com.example.bankcards.dto.user;
 
+import com.example.bankcards.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -9,4 +10,5 @@ public class UserDto {
     private Long id;
     private String name;
     private String email;
+    private Role role;
 }

@@ -31,7 +31,7 @@ public class Card {
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    private CardStatus status;
+    private CardStatus status = CardStatus.ACTIVE;
 
     @Column(name = "balance")
     private BigDecimal balance;

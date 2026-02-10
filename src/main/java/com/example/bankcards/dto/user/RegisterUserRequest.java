@@ -1,8 +1,10 @@
 package com.example.bankcards.dto.user;
 
+import com.example.bankcards.entity.Role;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
@@ -37,4 +39,7 @@ public class RegisterUserRequest {
             maxLength = 25
     )
     private String password;
+
+    @NotNull(message = "Role must be provided")
+    private Role role;
 }

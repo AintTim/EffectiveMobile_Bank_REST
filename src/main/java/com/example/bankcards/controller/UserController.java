@@ -60,6 +60,7 @@ public class UserController {
             )
     })
     @GetMapping
+    @SecurityRequirement(name = "bearerAuth")
     public List<UserDto> getUsers(
             @RequestParam(required = false, defaultValue = "", name = "sort") String sortBy) {
         return service.getAllUsers(sortBy);
@@ -88,6 +89,7 @@ public class UserController {
             )
     })
     @GetMapping("/{id}")
+    @SecurityRequirement(name = "bearerAuth")
     public UserDto getUser(@PathVariable Long id) {
         return service.getUserDto(id);
     }
